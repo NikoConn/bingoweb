@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.js": "/bingoweb/static/js/main.6ed618d4.js",
+    "static/js/239.84a61b18.chunk.js": "/bingoweb/static/js/239.84a61b18.chunk.js",
+    "static/js/213.b9cbc229.chunk.js": "/bingoweb/static/js/213.b9cbc229.chunk.js",
+    "static/js/455.b94a3c77.chunk.js": "/bingoweb/static/js/455.b94a3c77.chunk.js",
+    "static/js/451.d221a092.chunk.js": "/bingoweb/static/js/451.d221a092.chunk.js",
+    "static/js/38.212bf317.chunk.js": "/bingoweb/static/js/38.212bf317.chunk.js",
+    "index.html": "/bingoweb/index.html",
+    "main.6ed618d4.js.map": "/bingoweb/static/js/main.6ed618d4.js.map",
+    "239.84a61b18.chunk.js.map": "/bingoweb/static/js/239.84a61b18.chunk.js.map",
+    "213.b9cbc229.chunk.js.map": "/bingoweb/static/js/213.b9cbc229.chunk.js.map",
+    "455.b94a3c77.chunk.js.map": "/bingoweb/static/js/455.b94a3c77.chunk.js.map",
+    "451.d221a092.chunk.js.map": "/bingoweb/static/js/451.d221a092.chunk.js.map",
+    "38.212bf317.chunk.js.map": "/bingoweb/static/js/38.212bf317.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.6ed618d4.js"
+  ]
+}
