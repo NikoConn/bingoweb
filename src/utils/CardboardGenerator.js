@@ -1,5 +1,5 @@
-import JsBarcode from "jsbarcode";
 import { jsPDF } from "jspdf";
+import QRCode from 'qrcode';
 
 function generateRandomNumbers(min, max, num) {
   const numbers = [];
@@ -62,29 +62,27 @@ function generateBoard(rows = 3, columns = 9) {
   return board;
 }
 
-function generateBarcode(board) {
-  let barcodeData = "";
+async function generateQRCode(board) {
+  let qrData = "";
   for (let i = 0; i < board.length; i++) {
     for (let j = 0; j < board[i].length; j++) {
       const number = board[i][j];
-      if (number != "") {
-        barcodeData = barcodeData.concat(number.toString().padStart(2, "0"));
+      if (number !== "") {
+        qrData = qrData.concat(number.toString().padStart(2, "0"));
       }
     }
   }
 
-  const canvas = document.createElement("canvas");
-  JsBarcode(canvas, barcodeData, {
-    format: "CODE128",
-    width: 2,
-    height: 20,
-    displayValue: false,
-  });
-
-  return canvas.toDataURL("image/png");
+  // Espera la generación del QR code
+  return await QRCode.toDataURL(qrData, { width: 150, margin: 1 });
 }
 
-function generatePDF(n_boards = 10, columns = 9, rows = 3, pdfName = "bingo_boards") {
+async function generatePDF(
+  n_boards = 10,
+  columns = 9,
+  rows = 3,
+  pdfName = "bingo_boards"
+) {
   const doc = new jsPDF();
 
   const cellWidth = 18;
@@ -96,7 +94,7 @@ function generatePDF(n_boards = 10, columns = 9, rows = 3, pdfName = "bingo_boar
   const boardsPerPage = Math.floor(350 / (rows * cellHeight + margin + 25));
 
   for (let i = 0; i < n_boards; i++) {
-    if (i != 0 && i % boardsPerPage == 0) {
+    if (i !== 0 && i % boardsPerPage === 0) {
       doc.addPage();
     }
 
@@ -127,12 +125,15 @@ function generatePDF(n_boards = 10, columns = 9, rows = 3, pdfName = "bingo_boar
       boardHeight
     ); // Outer frame
 
-    // Title text and barcode positioning
-    doc.text(titleText, xStart, boardYPosition); // Adjust title position
+    // Title text and QR code positioning
+    doc.text(titleText, xStart + 12, boardYPosition); // Adjust title position
 
-    const barcodeX = xStart + doc.getTextWidth(titleText) + 10; // Positioning barcode next to title text
-    const barcodeY = boardYPosition - 6; // Adjust barcode position
-    doc.addImage(generateBarcode(board), "PNG", barcodeX, barcodeY, 70, 10);
+    const qrCodeX = xStart - 2; // Positioning QR code next to title text
+    const qrCodeY = boardYPosition - 6.75; // Adjust QR code position
+
+    // Esperar la generación del QR y luego agregarlo al PDF
+    const qrCodeDataURL = await generateQRCode(board);
+    doc.addImage(qrCodeDataURL, "PNG", qrCodeX, qrCodeY, 11.5, 11.5); // Add QR code to the PDF
 
     doc.setFontSize(fontSize);
     let x, y;
@@ -171,7 +172,14 @@ function generatePDF(n_boards = 10, columns = 9, rows = 3, pdfName = "bingo_boar
     }
   }
 
+  // Esperar a que todos los QR codes se hayan agregado antes de guardar el PDF
   doc.save(`${pdfName}.pdf`);
 }
 
-export { generatePDF };
+function parseBarcode(barcodeString) {
+  console.log(barcodeString)
+  barcodeString = String(barcodeString);
+  return barcodeString.match(/.{1,2}/g).map((par) => parseInt(par, 10));
+}
+
+export { generatePDF, parseBarcode };
