@@ -2,6 +2,7 @@
   "name": "bingoweb",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://NikoConn.github.io/bingoweb",
   "dependencies": {
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
@@ -44,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^6.2.0",
     "web-vitals": "^4.2.4"
   }
 }
